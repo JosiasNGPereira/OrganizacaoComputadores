@@ -42,15 +42,13 @@ class instrucaoBinario:
     def getprintBinario(numBinario):
         print(f"NUMERO BINARIO:  {numBinario}\n")
     
-    def separarBinario(self, conteudo, rangeA ,RangeB):
-        for linha in conteudo:
-            binario = linha 
-        x = range(rangeA,RangeB)
+    def separarBinario(self, conteudo, rangeA, rangeB):
+        x = range(rangeA, rangeB)    
         numBinario =""
         for i in x:
-            numBinario += binario[i]
+            numBinario += conteudo[i]
         return numBinario
-        
+    
     def setOPCODE(self, conteudo):
         numBinario = self.separarBinario(conteudo, 25, 32)
         self.BINARIO = conteudo
@@ -121,9 +119,6 @@ class instrucaoBinario:
            self.IMEDIATO = numerosBinario 
         
         
-        
-
-        
 """
 def separarBinario(conteudo):
     for linha in conteudo:
@@ -143,38 +138,29 @@ vetorInstrucao = []
 with open("binarioText.txt", "r") as arquivo:
     arquivoBinarios = arquivo.readlines()
     for linha in arquivoBinarios:
-        print(linha)
+        #print(linha)
         numerosBinarios = instrucaoBinario()
-        #numerosBinarios.criarInstrucao(arquivoBinarios)
         numerosBinarios.setOPCODE(linha)
+        #print(f"IDENTIFICACAO OP:{numerosBinarios.BINARIO}")
         numerosBinarios.setRD(linha)
         numerosBinarios.setFUNCT3(linha)
         numerosBinarios.setRS1(linha)
         numerosBinarios.setRS2(linha)
         numerosBinarios.setIMEDIATO(linha)
-        vetorInstrucao.append(linha)
+        vetorInstrucao.append(numerosBinarios)
         numerosBinarios.deletarInstrucao()
-"""""
-vetorInstrucao = []
+        #print(f"Objeto limpo: {numerosBinarios.BINARIO}")
 
-arquivoBinarios = open("binarioText.txt", "r")
-
-for linha in arquivoBinarios: 
-    print(linha)
-    numerosBinarios = instrucaoBinario()
-    #numerosBinarios.criarInstrucao(arquivoBinarios)
-    numerosBinarios.setOPCODE(linha)
-    numerosBinarios.setRD(linha)
-    numerosBinarios.setFUNCT3(linha)
-    numerosBinarios.setRS1(linha)
-    numerosBinarios.setRS2(linha)
-    numerosBinarios.setIMEDIATO(linha)
-    vetorInstrucao.append(numerosBinarios)
-    numerosBinarios.deletarInstrucao()
+def mostrarVetor(vet):
+    for linha in vet:
+        print(linha)
+        #print(f"OPCODE:{linha}\nRD:{numerosBinarios.getRD()}\nFUCNT3:{numerosBinarios.getFUNCT3()}\nRS1:{numerosBinarios.getRS1()}\nRS2:{numerosBinarios.getRS2()}")
+        #print(f"BINARIO:{numerosBinarios.getBINARIO()}\nIMEDIATO:{numerosBinarios.getIMEDIATO()}\nFUNCT7:{numerosBinarios.getFUNCT7()}\n")
     
+    
+mostrarVetor(vetorInstrucao)
+"""""
 
-
-#separarBinario(conteudo)
 """""
 arquivo.close()
 
