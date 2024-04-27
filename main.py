@@ -173,9 +173,11 @@ def adicionarNOP(vetorInstrucao):
             auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
             auxVetorInstrucao.append(NOP)
             auxVetorInstrucao.append(NOP)
-        elif(i<=24 and vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS2):
-            auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
-            auxVetorInstrucao.append(NOP)
+        if(i>23):
+            pass
+            if(vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS2):
+                auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
+                auxVetorInstrucao.append(NOP)
         else:
             auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
      
