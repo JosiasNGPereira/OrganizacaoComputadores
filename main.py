@@ -136,6 +136,7 @@ def separarBinario(conteudo):
 """
 vetorInstrucao = [] 
 
+
 with open("binarioText.txt", "r") as arquivo:
     arquivoBinarios = arquivo.readlines()
     for linha in arquivoBinarios:
@@ -164,15 +165,18 @@ def mostrarVetor(vetorInstrucao):
         print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
      
 def adicionarNOP(vetorInstrucao):
-    NOP = "00000000000000000000000000110011"
     auxVetorInstrucao = []
+    NOP = "00000000000000000000000000110011"
     x = len(vetorInstrucao)
+    x - 1
     for i in range(x):
-        print(i)        
-        if(vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS2):
-            auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
-            auxVetorInstrucao.append(NOP)
-            auxVetorInstrucao.append(NOP)
+        print(i)   
+        if(i>24):
+            pass     
+            if(vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS2):
+                auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
+                auxVetorInstrucao.append(NOP)
+                auxVetorInstrucao.append(NOP)
         if(i>23):
             pass
             if(vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS2):
@@ -180,6 +184,8 @@ def adicionarNOP(vetorInstrucao):
                 auxVetorInstrucao.append(NOP)
         else:
             auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
+            
+     
      
      
 def mostrarVetorBinario(vetorInstrucao):
@@ -191,7 +197,7 @@ def mostrarVetorBinario(vetorInstrucao):
      
 mostrarVetorBinario(vetorInstrucao)
 adicionarNOP(vetorInstrucao)
-mostrarVetorBinario(vetorInstrucao)
+#mostrarVetorBinario(auxVetorInstrucao)
     
 """""
 
