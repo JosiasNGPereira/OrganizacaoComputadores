@@ -134,7 +134,8 @@ def separarBinario(conteudo):
         print(primeiraVerificacao+"\n")
         op_code(primeiraVerificacao)
 """
-vetorInstrucao = []
+vetorInstrucao = [] 
+
 with open("binarioText.txt", "r") as arquivo:
     arquivoBinarios = arquivo.readlines()
     for linha in arquivoBinarios:
@@ -150,20 +151,47 @@ with open("binarioText.txt", "r") as arquivo:
         vetorInstrucao.append(numerosBinarios)
         numerosBinarios.deletarInstrucao()
         #print(f"Objeto limpo: {numerosBinarios.BINARIO}")
-
-def mostrarVetor(vet):
-    for linha in vet:
-        print(linha)
-        #print(f"OPCODE:{linha}\nRD:{numerosBinarios.getRD()}\nFUCNT3:{numerosBinarios.getFUNCT3()}\nRS1:{numerosBinarios.getRS1()}\nRS2:{numerosBinarios.getRS2()}")
-        #print(f"BINARIO:{numerosBinarios.getBINARIO()}\nIMEDIATO:{numerosBinarios.getIMEDIATO()}\nFUNCT7:{numerosBinarios.getFUNCT7()}\n")
+        
+def mostrarVetor(vetorInstrucao):
+    for i in range(25):
+        print(f"OPCODE: {vetorInstrucao[i].getOPCODE()}")
+        print(f"RD: {vetorInstrucao[i].getRD()}")
+        print(f"FUNCT3: {vetorInstrucao[i].getFUNCT3()}")
+        print(f"RS1: {vetorInstrucao[i].getRS1()}")
+        print(f"RS2: {vetorInstrucao[i].getRS2()}")
+        print(f"IMEDIATO: {vetorInstrucao[i].getIMEDIATO()}")
+        print(f"FUNCT7: {vetorInstrucao[i].getFUNCT7()}")
+        print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
+     
+def adicionarNOP(vetorInstrucao):
+    NOP = "00000000000000000000000000110011"
+    auxVetorInstrucao = []
+    x = len(vetorInstrucao)
+    for i in range(x):
+        print(i)        
+        if(vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS2):
+            auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
+            auxVetorInstrucao.append(NOP)
+            auxVetorInstrucao.append(NOP)
+        elif(i<=24 and vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS2):
+            auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
+            auxVetorInstrucao.append(NOP)
+        else:
+            auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
+     
+     
+def mostrarVetorBinario(vetorInstrucao):
+    x = len(vetorInstrucao)
+    print(f"TAMANHO:{x}")
+    for i in range(x):
+        print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
+     
+     
+mostrarVetorBinario(vetorInstrucao)
+adicionarNOP(vetorInstrucao)
+mostrarVetorBinario(vetorInstrucao)
     
-    
-mostrarVetor(vetorInstrucao)
 """""
 
 """""
 arquivo.close()
-
-print(f"OPCODE:{numerosBinarios.getOPCODE()}\nRD:{numerosBinarios.getRD()}\nFUCNT3:{numerosBinarios.getFUNCT3()}\nRS1:{numerosBinarios.getRS1()}\nRS2:{numerosBinarios.getRS2()}")
-print(f"BINARIO:{numerosBinarios.getBINARIO()}\nIMEDIATO:{numerosBinarios.getIMEDIATO()}\nFUNCT7:{numerosBinarios.getFUNCT7()}\n")
-#instrucao.getOPCODE(self)
