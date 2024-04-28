@@ -121,8 +121,19 @@ class instrucaoBinario:
         
         
 """
- #Rascunho
- 
+def separarBinario(conteudo):
+    for linha in conteudo:
+        print(linha)
+        binario = linha  
+        print("teste")
+        print(binario +"\n")
+       
+        x = range(25,32)
+        primeiraVerificacao =""
+        for i in x:
+            primeiraVerificacao += binario[i]
+        print(primeiraVerificacao+"\n")
+        op_code(primeiraVerificacao)
 """
 vetorInstrucao = [] 
 
@@ -142,7 +153,7 @@ with open("binarioText.txt", "r") as arquivo:
         #numerosBinarios.deletarInstrucao()
         #print(f"Objeto limpo: {numerosBinarios.BINARIO}")
         
-def mostrarVetor(vetorInstrucao,):
+def mostrarVetor(vetorInstrucao):
     for i in range(25):
         print(f"OPCODE: {vetorInstrucao[i].getOPCODE()}")
         print(f"RD: {vetorInstrucao[i].getRD()}")
@@ -153,78 +164,73 @@ def mostrarVetor(vetorInstrucao,):
         print(f"FUNCT7: {vetorInstrucao[i].getFUNCT7()}")
         print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
      
-def adicionarNOP(vetorInstrucao,auxVetorInstrucao):
-    NOP = "00000000000000000000000000110011"
+def adicionarNOP(vetorInstrucao):
+    # Crie uma instância de NOP
+    nop_instrucao = instrucaoBinario()
+    nop_instrucao.BINARIO = "00000000000000000000000000110011"
+    nop_instrucao.OPCODE = "NOP"
+    nop_instrucao.RD = "00000"
+    nop_instrucao.RS1 = "00000"
+    nop_instrucao.RS2 = "00000"
+    nop_instrucao.FUNCT3 = "000"
+    nop_instrucao.FUNCT7 = "0000000"
+
+    # Vetor auxiliar para acumular instruções
+    auxVetorInstrucao = []
+
+    # Tamanho do vetor de instruções
     x = len(vetorInstrucao)
+
     i = 0
     while i < x:
-        auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
+        # Adicione a instrução atual ao vetor auxiliar
+        auxVetorInstrucao.append(vetorInstrucao[i])
+
+        # Verifique se a instrução subsequente existe (`i + 1`) e `i + 2`
+        flag = False
         if i + 1 < x:
+            # Se `RD` da instrução atual for igual a `RS1` ou `RS2` da próxima instrução (`i + 1`), adicione 2 NOPs
             if vetorInstrucao[i].getRD() == vetorInstrucao[i + 1].getRS1() or vetorInstrucao[i].getRD() == vetorInstrucao[i + 1].getRS2():
-                auxVetorInstrucao.append(NOP+'\n')
-                auxVetorInstrucao.append(NOP+'\n')
-                i += 1
-                continue
+                flag = True
+                if(flag == True and vetorInstrucao[i].getRD() != vetorInstrucao[i + 2].getRS1() and vetorInstrucao[i].getRD() != vetorInstrucao[i + 3].getRS2()):
+                    auxVetorInstrucao.append(vetorInstrucao[i +2])
+                    auxVetorInstrucao.append(vetorInstrucao[i +3])
+                    #auxVetorInstrucao.append(nop_instrucao)
+                    #auxVetorInstrucao.append(nop_instrucao)
+                    # Avançar o índice para verificar a próxima instrução        
+                    i += 1
+        else:
+            auxVetorInstrucao.append(nop_instrucao)
+            auxVetorInstrucao.append(nop_instrucao)
+            i += 1
+        
 
-        if i + 2 < x:
-            if vetorInstrucao[i].getRD() == vetorInstrucao[i + 2].getRS1() or vetorInstrucao[i].getRD() == vetorInstrucao[i + 2].getRS2():
-                auxVetorInstrucao.append(NOP+'\n')
-                i += 1
-                continue
-
-        i += 1
+    # Atualize `vetorInstrucao` com `auxVetorInstrucao`
+    vetorInstrucao[:] = auxVetorInstrucao
 
 def mostrarVetorBinario(vetorInstrucao):
     x = len(vetorInstrucao)
     print(f"TAMANHO:{x}")
     for i in range(x):
-        print(vetorInstrucao[i])
+        # Verifique o tipo do elemento em vetorInstrucao
+        #print(f"Tipo de vetorInstrucao[{i}]: {type(vetorInstrucao[i])}")
+        if isinstance(vetorInstrucao[i], instrucaoBinario):
+            print(f"{vetorInstrucao[i].getBINARIO()}")
+        else:
+            print(f"Erro: vetorInstrucao[{i}] não é uma instância de instrucaoBinario")
+        #print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
      
-             
-auxVetorInstrucao = []
-#mostrarVetor(vetorInstrucao)
-adicionarNOP(vetorInstrucao,auxVetorInstrucao)
-#mostrarVetorBinario(auxVetorInstrucao)
+     
+mostrarVetorBinario(vetorInstrucao)
+adicionarNOP(vetorInstrucao)
+mostrarVetorBinario(vetorInstrucao)
 
-with open("ResultadoBinario.txt", "w") as arquivo:
-    for linha in auxVetorInstrucao:
-        arquivo.write(linha)
+with open("ResultadoBinarioPartB.txt", "w") as arquivo:
+    for linha in vetorInstrucao:
+        arquivo.write(linha.getBINARIO()+'\n')
 
-
-arquivo.close()
-
-time_clock=int(input("Digite o tempode clock:"))
-
-def CPI(time_clock,line_count):
-    time_clock+1
-    line_count-1
-    CPIobj = time_clock*line_count
-    CPIobj/line_count
-    return CPIobj
-
-def pipeline(time_clock):
-    with open("binarioText.txt", "r") as arquivo:
-          line_count = sum(1 for line in arquivo)
-    with open("ResultadoBinario.txt", "r") as abc:
-        line_count2 = sum(1 for line in abc)
         
-    print(time_clock)
-    print(CPI(time_clock, line_count))
-    print(CPI(time_clock, line_count2))
-    print(line_count)
-    print(line_count2)
-    Tcpu = line_count * CPI(time_clock, line_count) * time_clock
-    Tcpu2 = line_count2 * CPI(time_clock, line_count2) * time_clock
-    desempenho = Tcpu / Tcpu2
-    print(f"Tempo CPU sem NOPs: {Tcpu}")
-    print(f"Tempo CPU adicionando NOPs: {Tcpu2}")
-    print(f"Desempenho: {desempenho}")
-   
-    arquivo.close()
-    abc.close()
+"""""
 
-    
-pipeline(time_clock)
-
-
-
+"""""
+arquivo.close()
