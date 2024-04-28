@@ -8,6 +8,7 @@ class instrucaoBinario:
         self.BINARIO = ""
         self.FUNCT3 = ""
         self.FUNCT7 = ""
+        self.NOP = ""
         
     def criarInstrucao(self, conteudo):
         return
@@ -136,7 +137,6 @@ def separarBinario(conteudo):
 """
 vetorInstrucao = [] 
 
-
 with open("binarioText.txt", "r") as arquivo:
     arquivoBinarios = arquivo.readlines()
     for linha in arquivoBinarios:
@@ -149,10 +149,8 @@ with open("binarioText.txt", "r") as arquivo:
         numerosBinarios.setRS1(linha)
         numerosBinarios.setRS2(linha)
         numerosBinarios.setIMEDIATO(linha)
-        
         vetorInstrucao.append(numerosBinarios)
-        
-        numerosBinarios.deletarInstrucao()
+        #numerosBinarios.deletarInstrucao()
         #print(f"Objeto limpo: {numerosBinarios.BINARIO}")
         
 def mostrarVetor(vetorInstrucao):
@@ -167,40 +165,74 @@ def mostrarVetor(vetorInstrucao):
         print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
      
 def adicionarNOP(vetorInstrucao):
+    # Crie uma instância de NOP
+    nop_instrucao = instrucaoBinario()
+    nop_instrucao.BINARIO = "00000000000000000000000000110011"
+    nop_instrucao.OPCODE = "NOP"
+    nop_instrucao.RD = "00000"
+    nop_instrucao.RS1 = "00000"
+    nop_instrucao.RS2 = "00000"
+    nop_instrucao.FUNCT3 = "000"
+    nop_instrucao.FUNCT7 = "0000000"
+
+    # Vetor auxiliar para acumular instruções
     auxVetorInstrucao = []
-    NOP = "00000000000000000000000000110011"
+
+    # Tamanho do vetor de instruções
     x = len(vetorInstrucao)
-    x - 1
-    for i in range(x):
-        print(i)   
-        if(i>24):
-            pass     
-            if(vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+1].getRS2):
-                auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
-                auxVetorInstrucao.append(NOP)
-                auxVetorInstrucao.append(NOP)
-        if(i>23):
-            pass
-            if(vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS1 or vetorInstrucao[i].getRD() == vetorInstrucao[i+2].getRS2):
-                auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
-                auxVetorInstrucao.append(NOP)
-        else:
-            auxVetorInstrucao.append(vetorInstrucao[i].getBINARIO())
-            
-     
-     
-     
+
+    i = 0
+    while i < x:
+        # Adicione a instrução atual ao vetor auxiliar
+        auxVetorInstrucao.append(vetorInstrucao[i])
+
+        # Verifique se a instrução subsequente existe (`i + 1`) e `i + 2`
+        if i + 1 < x:
+            # Se `RD` da instrução atual for igual a `RS1` ou `RS2` da próxima instrução (`i + 1`), adicione 2 NOPs
+            if vetorInstrucao[i].getRD() == vetorInstrucao[i + 1].getRS1() or vetorInstrucao[i].getRD() == vetorInstrucao[i + 1].getRS2():
+                auxVetorInstrucao.append(nop_instrucao)
+                auxVetorInstrucao.append(nop_instrucao)
+                # Avançar o índice para verificar a próxima instrução
+                i += 1
+                continue
+
+        # Verifique se `i + 2` existe e se `RD` da instrução atual é igual a `RS1` ou `RS2` de `i + 2`
+        if i + 2 < x:
+            if vetorInstrucao[i].getRD() == vetorInstrucao[i + 2].getRS1() or vetorInstrucao[i].getRD() == vetorInstrucao[i + 2].getRS2():
+                # Adicione 1 NOP ao vetor auxiliar
+                auxVetorInstrucao.append(nop_instrucao)
+                # Avançar o índice para verificar a próxima instrução
+                i += 1
+                continue
+
+        # Avance para a próxima instrução
+        i += 1
+
+    # Atualize `vetorInstrucao` com `auxVetorInstrucao`
+    vetorInstrucao[:] = auxVetorInstrucao
+
 def mostrarVetorBinario(vetorInstrucao):
-    x = len(vetorInstrucao)  
+    x = len(vetorInstrucao)
     print(f"TAMANHO:{x}")
     for i in range(x):
-        print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
+        # Verifique o tipo do elemento em vetorInstrucao
+        #print(f"Tipo de vetorInstrucao[{i}]: {type(vetorInstrucao[i])}")
+        if isinstance(vetorInstrucao[i], instrucaoBinario):
+            print(f"{vetorInstrucao[i].getBINARIO()}")
+        else:
+            print(f"Erro: vetorInstrucao[{i}] não é uma instância de instrucaoBinario")
+        #print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
      
      
 mostrarVetorBinario(vetorInstrucao)
 adicionarNOP(vetorInstrucao)
-#mostrarVetorBinario(auxVetorInstrucao)
-    
+mostrarVetorBinario(vetorInstrucao)
+
+with open("ResultadoBinario.txt", "w") as arquivo:
+    for linha in vetorInstrucao:
+        arquivo.write(linha.getBINARIO()+'\n')
+
+        
 """""
 
 """""
