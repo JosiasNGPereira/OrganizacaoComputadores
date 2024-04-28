@@ -149,7 +149,9 @@ with open("binarioText.txt", "r") as arquivo:
         numerosBinarios.setRS1(linha)
         numerosBinarios.setRS2(linha)
         numerosBinarios.setIMEDIATO(linha)
+        
         vetorInstrucao.append(numerosBinarios)
+        
         numerosBinarios.deletarInstrucao()
         #print(f"Objeto limpo: {numerosBinarios.BINARIO}")
         
@@ -189,7 +191,7 @@ def adicionarNOP(vetorInstrucao):
      
      
 def mostrarVetorBinario(vetorInstrucao):
-    x = len(vetorInstrucao)
+    x = len(vetorInstrucao)  
     print(f"TAMANHO:{x}")
     for i in range(x):
         print(f"BINARIO: {vetorInstrucao[i].getBINARIO()}")
