@@ -199,8 +199,11 @@ def CPI(time_clock,line_count):
     time_clock+1
     line_count-1
     CPIobj = time_clock*line_count
-    CPIobj/line_count
-    return CPIobj
+    print(CPIobj)
+    line_count
+    resultado = CPIobj/line_count
+    print(resultado)
+    return resultado
 
 def pipeline(time_clock):
     with open("binarioText.txt", "r") as arquivo:
@@ -208,11 +211,6 @@ def pipeline(time_clock):
     with open("ResultadoBinario.txt", "r") as abc:
         line_count2 = sum(1 for line in abc)
         
-    print(time_clock)
-    print(CPI(time_clock, line_count))
-    print(CPI(time_clock, line_count2))
-    print(line_count)
-    print(line_count2)
     Tcpu = line_count * CPI(time_clock, line_count) * time_clock
     Tcpu2 = line_count2 * CPI(time_clock, line_count2) * time_clock
     desempenho = Tcpu / Tcpu2
